@@ -32,10 +32,10 @@ public class Coords extends Module
     }
     
     public int getWidth() {
-        final int xwidth = Coords.fr.func_78256_a("X: " + Math.round(Minecraft.func_71410_x().field_71439_g.field_70165_t * 1000.0) / 1000L);
-        final int Ywidth = Coords.fr.func_78256_a("Y: " + Math.round(Minecraft.func_71410_x().field_71439_g.field_70163_u * 1000.0) / 1000L);
-        final int Zwidth = Coords.fr.func_78256_a("Z: " + Math.round(Minecraft.func_71410_x().field_71439_g.field_70161_v * 1000.0) / 1000L);
-        final int BiomeWidth = Coords.fr.func_78256_a("Biome: " + this.biomeName);
+        final int xwidth = Coords.fr.getStringWidth("X: " + Math.round(Minecraft.getMinecraft().thePlayer.posX * 1000.0) / 1000L);
+        final int Ywidth = Coords.fr.getStringWidth("Y: " + Math.round(Minecraft.getMinecraft().thePlayer.posY * 1000.0) / 1000L);
+        final int Zwidth = Coords.fr.getStringWidth("Z: " + Math.round(Minecraft.getMinecraft().thePlayer.posZ * 1000.0) / 1000L);
+        final int BiomeWidth = Coords.fr.getStringWidth("Biome: " + this.biomeName);
         if (xwidth > Ywidth && xwidth > Zwidth) {
             this.subwidth = xwidth;
         }
@@ -65,15 +65,15 @@ public class Coords extends Module
     public void onRender(final RenderGameOverlayEvent.Text event) {
         this.posXCoords = (int)Client.instance.settingsManager.getSettingByName("Coords: X").getValDouble() + 2;
         this.posYCoords = (int)Client.instance.settingsManager.getSettingByName("Coords: Y").getValDouble() + 2;
-        Gui.func_73734_a(this.posXCoords, this.posYCoords, this.posXCoords + this.getWidth() + 1, this.posYCoords + this.getHeight(), -1879048192);
-        Coords.fr.func_175063_a("X: " + Math.round(Minecraft.func_71410_x().field_71439_g.field_70165_t * 1000.0) / 1000L, (float)(this.posXCoords + 3), (float)(this.posYCoords + 4), -1);
-        Coords.fr.func_175063_a("Y: " + Math.round(Minecraft.func_71410_x().field_71439_g.field_70163_u * 1000.0) / 1000L, (float)(this.posXCoords + 3), (float)(this.posYCoords + 10 + 4), -1);
-        Coords.fr.func_175063_a("Z: " + Math.round(Minecraft.func_71410_x().field_71439_g.field_70161_v * 1000.0) / 1000L, (float)(this.posXCoords + 3), (float)(this.posYCoords + 20 + 4), -1);
-        final BlockPos blockpos = new BlockPos(Coords.mc.func_175606_aa().field_70165_t, Coords.mc.func_175606_aa().func_174813_aQ().field_72338_b, Coords.mc.func_175606_aa().field_70161_v);
-        if (Coords.mc.field_71441_e != null && Coords.mc.field_71441_e.func_175667_e(blockpos)) {
-            final Chunk chunk = Coords.mc.field_71441_e.func_175726_f(blockpos);
-            this.biomeName = chunk.func_177411_a(blockpos, Coords.mc.field_71441_e.func_72959_q()).field_76791_y;
-            Coords.fr.func_175063_a("Biome: " + this.biomeName, (float)(this.posXCoords + 3), (float)(this.posYCoords + 30 + 4), -1);
+        Gui.drawRect(this.posXCoords, this.posYCoords, this.posXCoords + this.getWidth() + 1, this.posYCoords + this.getHeight(), -1879048192);
+        Coords.fr.drawStringWithShadow("X: " + Math.round(Minecraft.getMinecraft().thePlayer.posX * 1000.0) / 1000L, (float)(this.posXCoords + 3), (float)(this.posYCoords + 4), -1);
+        Coords.fr.drawStringWithShadow("Y: " + Math.round(Minecraft.getMinecraft().thePlayer.posY * 1000.0) / 1000L, (float)(this.posXCoords + 3), (float)(this.posYCoords + 10 + 4), -1);
+        Coords.fr.drawStringWithShadow("Z: " + Math.round(Minecraft.getMinecraft().thePlayer.posZ * 1000.0) / 1000L, (float)(this.posXCoords + 3), (float)(this.posYCoords + 20 + 4), -1);
+        final BlockPos blockpos = new BlockPos(Coords.mc.getRenderViewEntity().posX, Coords.mc.getRenderViewEntity().getEntityBoundingBox().minY, Coords.mc.getRenderViewEntity().posZ);
+        if (Coords.mc.theWorld != null && Coords.mc.theWorld.isBlockLoaded(blockpos)) {
+            final Chunk chunk = Coords.mc.theWorld.getChunkFromBlockCoords(blockpos);
+            this.biomeName = chunk.getBiome(blockpos, Coords.mc.theWorld.getWorldChunkManager()).biomeName;
+            Coords.fr.drawStringWithShadow("Biome: " + this.biomeName, (float)(this.posXCoords + 3), (float)(this.posYCoords + 30 + 4), -1);
         }
     }
 }

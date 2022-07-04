@@ -26,9 +26,9 @@ public class Ping extends Module
     
     @SubscribeEvent
     public void onRender(final RenderGameOverlayEvent.Text event) {
-        final int ping = Ping.mc.func_147114_u().func_175102_a(Ping.mc.field_71439_g.func_110124_au()).func_178853_c();
+        final int ping = Ping.mc.getNetHandler().getPlayerInfo(Ping.mc.thePlayer.getUniqueID()).getResponseTime();
         this.posXPing = (int)Client.instance.settingsManager.getSettingByName("Ping: X").getValDouble() + 2;
         this.posYPing = (int)Client.instance.settingsManager.getSettingByName("Ping: Y").getValDouble() + 2;
-        Ping.fr.func_175063_a("Ping: " + ping, (float)this.posXPing, (float)this.posYPing, -1);
+        Ping.fr.drawStringWithShadow("Ping: " + ping, (float)this.posXPing, (float)this.posYPing, -1);
     }
 }

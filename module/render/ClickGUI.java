@@ -23,7 +23,7 @@ public class ClickGUI extends Module
     @Override
     public void onEnable() {
         super.onEnable();
-        ClickGUI.mc.func_147108_a((GuiScreen)Client.instance.clickGui);
+        ClickGUI.mc.displayGuiScreen((GuiScreen)Client.instance.clickGui);
         this.setToggled(false);
     }
 }

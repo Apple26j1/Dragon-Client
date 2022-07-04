@@ -71,12 +71,12 @@ public class Button extends Component
     
     @Override
     public void renderComponent() {
-        Gui.func_73734_a(this.parent.getX(), this.parent.getY() + this.offset, this.parent.getX() + this.parent.getWidth(), this.parent.getY() + 12 + this.offset, this.mod.isToggled() ? ClientColor.getClientColorNormal().getRGB() : ClientColor.getClientBackground().getRGB());
+        Gui.drawRect(this.parent.getX(), this.parent.getY() + this.offset, this.parent.getX() + this.parent.getWidth(), this.parent.getY() + 12 + this.offset, this.mod.isToggled() ? ClientColor.getClientColorNormal().getRGB() : ClientColor.getClientBackground().getRGB());
         GL11.glPushMatrix();
         GL11.glScalef(0.5f, 0.5f, 0.5f);
-        Minecraft.func_71410_x().field_71466_p.func_175063_a(this.mod.getName(), (float)((this.parent.getX() + 2) * 2), (float)((this.parent.getY() + this.offset + 2) * 2 + 4), -1);
+        Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(this.mod.getName(), (float)((this.parent.getX() + 2) * 2), (float)((this.parent.getY() + this.offset + 2) * 2 + 4), -1);
         if (this.subcomponents.size() > 2) {
-            Minecraft.func_71410_x().field_71466_p.func_175063_a(this.open ? "-" : "+", (float)((this.parent.getX() + this.parent.getWidth() - 10) * 2), (float)((this.parent.getY() + this.offset + 2) * 2 + 4), -1);
+            Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(this.open ? "-" : "+", (float)((this.parent.getX() + this.parent.getWidth() - 10) * 2), (float)((this.parent.getY() + this.offset + 2) * 2 + 4), -1);
         }
         GL11.glPopMatrix();
         if (this.open && !this.subcomponents.isEmpty()) {

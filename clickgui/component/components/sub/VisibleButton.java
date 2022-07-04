@@ -36,11 +36,11 @@ public class VisibleButton extends Component
     
     @Override
     public void renderComponent() {
-        Gui.func_73734_a(this.parent.parent.getX() + 2, this.parent.parent.getY() + this.offset, this.parent.parent.getX() + this.parent.parent.getWidth() * 1, this.parent.parent.getY() + this.offset + 12, ClientColor.getClientBackground().getRGB());
-        Gui.func_73734_a(this.parent.parent.getX(), this.parent.parent.getY() + this.offset, this.parent.parent.getX() + 2, this.parent.parent.getY() + this.offset + 12, ClientColor.getClientBackground().getRGB());
+        Gui.drawRect(this.parent.parent.getX() + 2, this.parent.parent.getY() + this.offset, this.parent.parent.getX() + this.parent.parent.getWidth() * 1, this.parent.parent.getY() + this.offset + 12, ClientColor.getClientBackground().getRGB());
+        Gui.drawRect(this.parent.parent.getX(), this.parent.parent.getY() + this.offset, this.parent.parent.getX() + 2, this.parent.parent.getY() + this.offset + 12, ClientColor.getClientBackground().getRGB());
         GL11.glPushMatrix();
         GL11.glScalef(0.5f, 0.5f, 0.5f);
-        Minecraft.func_71410_x().field_71466_p.func_175063_a("Visible: " + this.mod.visible, (float)((this.parent.parent.getX() + 7) * 2), (float)((this.parent.parent.getY() + this.offset + 2) * 2 + 5), -1);
+        Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow("Visible: " + this.mod.visible, (float)((this.parent.parent.getX() + 7) * 2), (float)((this.parent.parent.getY() + this.offset + 2) * 2 + 5), -1);
         GL11.glPopMatrix();
     }
     

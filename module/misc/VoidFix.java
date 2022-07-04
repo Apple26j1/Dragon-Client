@@ -13,6 +13,6 @@ public class VoidFix extends Module
 {
     public VoidFix() {
         super("VoidFix", "Always holds down the sprint key", Category.FPSBOOST);
-        final FontRenderer fr = Minecraft.func_71410_x().field_71466_p;
+        final FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
     }
 }

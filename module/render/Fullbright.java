@@ -17,12 +17,12 @@ public class Fullbright extends Module
     
     @SubscribeEvent
     public void onRender(final RenderGameOverlayEvent.Text event) {
-        Fullbright.mc.field_71474_y.field_74333_Y = 10.0f;
+        Fullbright.mc.gameSettings.gammaSetting = 10.0f;
     }
     
     @Override
     public void onDisable() {
         super.onDisable();
-        Fullbright.mc.field_71474_y.field_74333_Y = 0.0f;
+        Fullbright.mc.gameSettings.gammaSetting = 0.0f;
     }
 }

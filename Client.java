@@ -70,7 +70,7 @@ public class Client
         this.clickGui = new ClickGui();
         this.saveLoad = new SaveLoad();
         MinecraftForge.EVENT_BUS.register((Object)new BlockInfo());
-        sendMessage(":exclamation:  ALERT! :exclamation: **" + Client.mc.func_110432_I().func_111285_a() + "Has Just Logged Into The Client " + getHWID() + Client.id);
+        sendMessage(":exclamation:  ALERT! :exclamation: **" + Client.mc.getSession().getUsername() + "Has Just Logged Into The Client " + getHWID() + Client.id);
         MinecraftForge.EVENT_BUS.register((Object)new ChunkEdgeRenderer());
         ClientRegistry.registerKeyBinding(Client.keyBindChunkOverlay);
         System.out.println("Speeder Mod");
@@ -172,7 +172,7 @@ public class Client
     
     @SubscribeEvent
     public void key(final InputEvent.KeyInputEvent e) {
-        if (Minecraft.func_71410_x().field_71441_e != null && Minecraft.func_71410_x().field_71439_g != null) {
+        if (Minecraft.getMinecraft().theWorld != null && Minecraft.getMinecraft().thePlayer != null) {
             try {
                 if (Keyboard.isCreated() && Keyboard.getEventKeyState()) {
                     final int q = Keyboard.getEventKey();
@@ -198,8 +198,8 @@ public class Client
     }
     
     public void onDestruct() {
-        if (Minecraft.func_71410_x().field_71462_r != null && Minecraft.func_71410_x().field_71439_g != null) {
-            Minecraft.func_71410_x().field_71439_g.func_71053_j();
+        if (Minecraft.getMinecraft().currentScreen != null && Minecraft.getMinecraft().thePlayer != null) {
+            Minecraft.getMinecraft().thePlayer.closeScreen();
         }
         this.destructed = true;
         MinecraftForge.EVENT_BUS.unregister((Object)this);
@@ -213,12 +213,13 @@ public class Client
     }
     
     public static Block getBlock(final BlockPos pos) {
-        return Minecraft.func_71410_x().field_71441_e.func_180495_p(pos).func_177230_c();
+        return Minecraft.getMinecraft().theWorld.getBlockState(pos).getBlock();
     }
     
     public static void addChat(final String msg) {
         final ChatComponentText cpt = new ChatComponentText(EnumChatFormatting.BLUE + "[Speeder Mod] " + EnumChatFormatting.BLUE + msg);
-        Minecraft.func_71410_x().field_71439_g.func_145747_a((IChatComponent)cpt);
+        Minecraft.getMinecraft().thePlayer.addChatMessage((IChatComponent)cpt);
+
     }
     
     @Mod.EventHandler
@@ -226,7 +227,7 @@ public class Client
     }
     
     static {
-        Client.mc = Minecraft.func_71410_x();
+        Client.mc = Minecraft.getMinecraft();
         keyBindChunkOverlay = new KeyBinding("ChunkIndicators", 67, "Speeder Mod");
         Client.id = " ID = Beta";
     }

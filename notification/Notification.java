@@ -45,7 +45,7 @@ public class Notification
     }
     
     public void render() {
-        final Minecraft mc = Minecraft.func_71410_x();
+        final Minecraft mc = Minecraft.getMinecraft();
         final ScaledResolution sr = new ScaledResolution(mc);
         double offset = 0.0;
         final byte width = 120;
@@ -60,11 +60,11 @@ public class Notification
         else {
             offset = width;
         }
-        final FontRenderer fontRenderer = Minecraft.func_71410_x().field_71466_p;
-        drawRect(sr.func_78326_a() - offset, sr.func_78328_b() - 5 - height, sr.func_78326_a(), sr.func_78328_b() - 5, ClientColor.getClientBackground().getRGB());
-        drawRect(sr.func_78326_a() - offset, sr.func_78328_b() - 5 - height, sr.func_78326_a() - offset + 4.0, sr.func_78328_b() - 5, ClientColor.getClientColorNormal().getRGB());
-        fontRenderer.func_78276_b(this.title, (int)(sr.func_78326_a() - offset + 8.0), sr.func_78328_b() - 2 - height, -1);
-        fontRenderer.func_78276_b(this.messsage, (int)(sr.func_78326_a() - offset + 8.0), sr.func_78328_b() - 15, -1);
+        final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRendererObj;
+        drawRect(sr.getScaledWidth() - offset, sr.getScaledHeight() - 5 - height, sr.getScaledWidth(), sr.getScaledHeight() - 5, ClientColor.getClientBackground().getRGB());
+        drawRect(sr.getScaledWidth() - offset, sr.getScaledHeight() - 5 - height, sr.getScaledWidth() - offset + 4.0, sr.getScaledHeight() - 5, ClientColor.getClientColorNormal().getRGB());
+        fontRenderer.drawString(this.title, (int)(sr.getScaledWidth() - offset + 8.0), sr.getScaledHeight() - 2 - height, -1);
+        fontRenderer.drawString(this.messsage, (int)(sr.getScaledWidth() - offset + 8.0), sr.getScaledHeight() - 15, -1);
     }
     
     public static void drawRect(double left, double top, double right, double bottom, final int color) {
@@ -82,20 +82,20 @@ public class Notification
         final float f5 = (color >> 16 & 0xFF) / 255.0f;
         final float f6 = (color >> 8 & 0xFF) / 255.0f;
         final float f7 = (color & 0xFF) / 255.0f;
-        final Tessellator tessellator = Tessellator.func_178181_a();
-        final WorldRenderer worldrenderer = tessellator.func_178180_c();
-        GlStateManager.func_179147_l();
-        GlStateManager.func_179090_x();
-        GlStateManager.func_179120_a(770, 771, 1, 0);
-        GlStateManager.func_179131_c(f5, f6, f7, f4);
-        worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181705_e);
-        worldrenderer.func_181662_b(left, bottom, 0.0).func_181675_d();
-        worldrenderer.func_181662_b(right, bottom, 0.0).func_181675_d();
-        worldrenderer.func_181662_b(right, top, 0.0).func_181675_d();
-        worldrenderer.func_181662_b(left, top, 0.0).func_181675_d();
-        tessellator.func_78381_a();
-        GlStateManager.func_179098_w();
-        GlStateManager.func_179084_k();
+        final Tessellator tessellator = Tessellator.getInstance();
+        final WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        GlStateManager.enableBlend();
+        GlStateManager.disableTexture2D();
+        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+        GlStateManager.color(f5, f6, f7, f4);
+        worldrenderer.begin(7, DefaultVertexFormats.POSITION);
+        worldrenderer.pos(left, bottom, 0.0).endVertex();
+        worldrenderer.pos(right, bottom, 0.0).endVertex();
+        worldrenderer.pos(right, top, 0.0).endVertex();
+        worldrenderer.pos(left, top, 0.0).endVertex();
+        tessellator.draw();
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
     }
     
     public static void drawRect(final int mode, double left, double top, double right, double bottom, final int color) {
@@ -113,19 +113,19 @@ public class Notification
         final float f5 = (color >> 16 & 0xFF) / 255.0f;
         final float f6 = (color >> 8 & 0xFF) / 255.0f;
         final float f7 = (color & 0xFF) / 255.0f;
-        final Tessellator tessellator = Tessellator.func_178181_a();
-        final WorldRenderer worldrenderer = tessellator.func_178180_c();
-        GlStateManager.func_179147_l();
-        GlStateManager.func_179090_x();
-        GlStateManager.func_179120_a(770, 771, 1, 0);
-        GlStateManager.func_179131_c(f5, f6, f7, f4);
-        worldrenderer.func_181668_a(mode, DefaultVertexFormats.field_181705_e);
-        worldrenderer.func_181662_b(left, bottom, 0.0).func_181675_d();
-        worldrenderer.func_181662_b(right, bottom, 0.0).func_181675_d();
-        worldrenderer.func_181662_b(right, top, 0.0).func_181675_d();
-        worldrenderer.func_181662_b(left, top, 0.0).func_181675_d();
-        tessellator.func_78381_a();
-        GlStateManager.func_179098_w();
-        GlStateManager.func_179084_k();
+        final Tessellator tessellator = Tessellator.getInstance();
+        final WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        GlStateManager.enableBlend();
+        GlStateManager.disableTexture2D();
+        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+        GlStateManager.color(f5, f6, f7, f4);
+        worldrenderer.begin(mode, DefaultVertexFormats.POSITION);
+        worldrenderer.pos(left, bottom, 0.0).endVertex();
+        worldrenderer.pos(right, bottom, 0.0).endVertex();
+        worldrenderer.pos(right, top, 0.0).endVertex();
+        worldrenderer.pos(left, top, 0.0).endVertex();
+        tessellator.draw();
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
     }
 }

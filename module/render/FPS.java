@@ -29,6 +29,6 @@ public class FPS extends Module
     public void onRender(final RenderGameOverlayEvent.Text event) {
         this.posXFPS = (int)Client.instance.settingsManager.getSettingByName("FPS: X").getValDouble() + 2;
         this.posYFPS = (int)Client.instance.settingsManager.getSettingByName("FPS: Y").getValDouble() + 2;
-        FPS.fr.func_175063_a("FPS[Boost]: " + Minecraft.func_175610_ah(), (float)this.posXFPS, (float)this.posYFPS, -1);
+        FPS.fr.drawStringWithShadow("FPS[Boost]: " + Minecraft.getDebugFPS(), (float)this.posXFPS, (float)this.posYFPS, -1);
     }
 }

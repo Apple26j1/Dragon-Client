@@ -72,11 +72,11 @@ public class Frame
     
     public void renderFrame(final FontRenderer fontRenderer) {
         final Color color = new Color(0, 0, 0);
-        Gui.func_73734_a(this.x, this.y, this.x + this.width, this.y + this.barHeight, color.getRGB());
+        Gui.drawRect(this.x, this.y, this.x + this.width, this.y + this.barHeight, color.getRGB());
         GL11.glPushMatrix();
         GL11.glScalef(0.5f, 0.5f, 0.5f);
-        fontRenderer.func_175063_a(this.category.name(), (float)((this.x + 2) * 2 + 5), (this.y + 2.5f) * 2.0f + 5.0f, -1);
-        fontRenderer.func_175063_a(this.open ? "-" : "+", (float)((this.x + this.width - 10) * 2 + 5), (this.y + 2.5f) * 2.0f + 5.0f, -1);
+        fontRenderer.drawStringWithShadow(this.category.name(), (float)((this.x + 2) * 2 + 5), (this.y + 2.5f) * 2.0f + 5.0f, -1);
+        fontRenderer.drawStringWithShadow(this.open ? "-" : "+", (float)((this.x + this.width - 10) * 2 + 5), (this.y + 2.5f) * 2.0f + 5.0f, -1);
         GL11.glPopMatrix();
         if (this.open && !this.components.isEmpty()) {
             for (final Component component : this.components) {

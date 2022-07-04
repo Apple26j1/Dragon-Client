@@ -20,38 +20,32 @@ public class KeyHandler
     
     @SubscribeEvent
     public void onRenderTick(final TickEvent.RenderTickEvent event) {
-        if (event.phase == TickEvent.Phase.START && KeyHandler.mc.field_71439_g != null && KeyHandler.mc.field_71441_e != null && KeyHandler.mc.field_71415_G) {
-            GameSettings gamesettings = KeyHandler.mc.field_71474_y;
-            if (GameSettings.func_100015_a(Client.in)) {
-                if (KeyHandler.mc.field_71439_g.func_70093_af()) {
-                    final GameSettings field_71474_y = KeyHandler.mc.field_71474_y;
-                    --field_71474_y.field_74334_X;
+        if (event.phase == TickEvent.Phase.START && KeyHandler.mc.thePlayer != null && KeyHandler.mc.theWorld != null && KeyHandler.mc.inGameHasFocus) {
+            GameSettings gamesettings = KeyHandler.mc.gameSettings;
+            if (GameSettings.isKeyDown(Client.in)) {
+                if (KeyHandler.mc.thePlayer.isSneaking()) {
+                    --gamesettings.fovSetting;
                 }
                 else {
-                    final GameSettings field_71474_y2 = KeyHandler.mc.field_71474_y;
-                    field_71474_y2.field_74334_X -= 0.1f;
+                    gamesettings.fovSetting -= 0.1f;
                 }
             }
-            gamesettings = KeyHandler.mc.field_71474_y;
-            if (GameSettings.func_100015_a(Client.out)) {
-                if (KeyHandler.mc.field_71439_g.func_70093_af()) {
-                    final GameSettings field_71474_y3 = KeyHandler.mc.field_71474_y;
-                    ++field_71474_y3.field_74334_X;
+            if (GameSettings.isKeyDown(Client.out)) {
+                if (KeyHandler.mc.thePlayer.isSneaking()) {
+                    ++gamesettings.fovSetting;
                 }
                 else {
-                    final GameSettings field_71474_y4 = KeyHandler.mc.field_71474_y;
-                    field_71474_y4.field_74334_X += 0.1f;
+                    gameSettings.fovSetting += 0.1f;
                 }
             }
-            gamesettings = KeyHandler.mc.field_71474_y;
-            if (GameSettings.func_100015_a(Client.center)) {
-                KeyHandler.mc.field_71474_y.field_74334_X = KeyHandler.defaultfov;
+            if (GameSettings.isKeyDown(Client.center)) {
+                KeyHandler.mc.gameSettings.fovSetting = KeyHandler.defaultfov;
             }
         }
     }
     
     static {
-        KeyHandler.mc = Minecraft.func_71410_x();
-        KeyHandler.defaultfov = KeyHandler.mc.field_71474_y.field_74334_X;
+        KeyHandler.mc = Minecraft.getMinecraft();
+        KeyHandler.defaultfov = KeyHandler.mc.gameSettings.fovSetting;
     }
 }

@@ -28,10 +28,10 @@ public class ClickGui extends GuiScreen
         }
     }
     
-    public void func_73866_w_() {
+    public void initGui() {
     }
     
-    public void func_73863_a(final int mouseX, final int mouseY, final float partialTicks) {
+    public void drawScreen(final int mouseX, final int mouseY, final float partialTicks) {
         for (final Frame frame : ClickGui.frames) {
             frame.renderFrame(this.field_146289_q);
             frame.updatePosition(mouseX, mouseY);
@@ -41,7 +41,7 @@ public class ClickGui extends GuiScreen
         }
     }
     
-    protected void func_73864_a(final int mouseX, final int mouseY, final int mouseButton) throws IOException {
+    protected void mouseClicked(final int mouseX, final int mouseY, final int mouseButton) throws IOException {
         for (final Frame frame : ClickGui.frames) {
             if (frame.isWithinHeader(mouseX, mouseY) && mouseButton == 0) {
                 frame.setDrag(true);
@@ -59,7 +59,7 @@ public class ClickGui extends GuiScreen
         }
     }
     
-    protected void func_73869_a(final char typedChar, final int keyCode) {
+    protected void keyTyped(final char typedChar, final int keyCode) {
         for (final Frame frame : ClickGui.frames) {
             if (frame.isOpen() && keyCode != 1 && !frame.getComponents().isEmpty()) {
                 for (final Component component : frame.getComponents()) {
@@ -68,11 +68,11 @@ public class ClickGui extends GuiScreen
             }
         }
         if (keyCode == 1) {
-            this.field_146297_k.func_147108_a((GuiScreen)null);
+            this.mc.displayGuiScreen((GuiScreen)null);
         }
     }
     
-    protected void func_146286_b(final int mouseX, final int mouseY, final int state) {
+    protected void mouseReleased(final int mouseX, final int mouseY, final int state) {
         for (final Frame frame : ClickGui.frames) {
             frame.setDrag(false);
         }
@@ -85,7 +85,7 @@ public class ClickGui extends GuiScreen
         }
     }
     
-    public boolean func_73868_f() {
+    public boolean doesGuiPauseGame() {
         return true;
     }
     

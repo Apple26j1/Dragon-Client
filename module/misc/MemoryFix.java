@@ -18,8 +18,8 @@ public class MemoryFix extends Module
     
     @SubscribeEvent
     public void MessageDelay(final TickEvent.ClientTickEvent clienttickevent) {
-        if (this.updateMessage != null && Minecraft.func_71410_x().field_71439_g != null && ++this.messageDelay == 80) {
-            Minecraft.func_71410_x().field_71439_g.func_145747_a(this.updateMessage);
+        if (this.updateMessage != null && Minecraft.getMinecraft().thePlayer != null && ++this.messageDelay == 80) {
+            Minecraft.getMinecraft().thePlayer.addChatMessage(this.updateMessage);
             this.updateMessage = null;
         }
     }

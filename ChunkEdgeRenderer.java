@@ -30,7 +30,7 @@ public class ChunkEdgeRenderer
     
     @SubscribeEvent
     public void getKeyPress(final TickEvent.ClientTickEvent event) {
-        if (Minecraft.func_71410_x().field_71441_e != null && Client.keyBindChunkOverlay.func_151468_f()) {
+        if (Minecraft.getMinecraft().theWorld != null && Client.keyBindChunkOverlay.isPressed()) {
             this.chunkEdgeState = (this.chunkEdgeState + 1) % 3;
         }
     }
@@ -38,21 +38,21 @@ public class ChunkEdgeRenderer
     @SubscribeEvent
     public void renderChunkEdges(final RenderWorldLastEvent event) {
         if (this.chunkEdgeState != 0) {
-            final EntityPlayerSP entity = Minecraft.func_71410_x().field_71439_g;
-            final Tessellator tessellator = Tessellator.func_178181_a();
-            final WorldRenderer worldrenderer = tessellator.func_178180_c();
+            final EntityPlayerSP entity = Minecraft.getMinecraft().thePlayer;
+            final Tessellator tessellator = Tessellator.getInstance();
+            final WorldRenderer worldrenderer = tessellator.getWorldRenderer();
             GL11.glPushMatrix();
             final float frame = event.partialTicks;
-            final double inChunkPosX = entity.field_70142_S + (entity.field_70165_t - entity.field_70142_S) * frame;
-            final double inChunkPosY = entity.field_70137_T + (entity.field_70163_u - entity.field_70137_T) * frame;
-            final double inChunkPosZ = entity.field_70136_U + (entity.field_70161_v - entity.field_70136_U) * frame;
+            final double inChunkPosX = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * frame;
+            final double inChunkPosY = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * frame;
+            final double inChunkPosZ = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * frame;
             GL11.glTranslated(-inChunkPosX, -inChunkPosY, -inChunkPosZ);
             GL11.glDisable(3553);
             GL11.glEnable(3042);
             GL11.glBlendFunc(770, 771);
             GL11.glLineWidth(2.0f);
-            worldrenderer.func_181668_a(1, DefaultVertexFormats.field_181706_f);
-            GL11.glTranslatef((float)(entity.field_70176_ah * 16), 0.0f, (float)(entity.field_70164_aj * 16));
+            worldrenderer.begin(1, DefaultVertexFormats.POSITION_COLOR);
+            GL11.glTranslatef((float)(entity.chunkCoordX * 16), 0.0f, (float)((entity.chunkCoordZ * 16));
             double x = 0.0;
             double z = 0.0;
             final float redColourR = 0.9f;
@@ -69,21 +69,21 @@ public class ChunkEdgeRenderer
                         x = eyeHeightBlock * 16;
                         z = f * 16;
                         redColourA = Math.round(Math.pow(1.25, -(eyeHeightBlock * eyeHeightBlock + f * f)) * 6.0) / 6.0f;
-                        worldrenderer.func_181662_b(x, 0.0, z).func_181666_a(redColourR, redColourG, redColourB, redColourA).func_181675_d();
-                        worldrenderer.func_181662_b(x, 256.0, z).func_181666_a(redColourR, redColourG, redColourB, redColourA).func_181675_d();
-                        worldrenderer.func_181662_b(x + 16.0, 0.0, z).func_181666_a(redColourR, redColourG, redColourB, redColourA).func_181675_d();
-                        worldrenderer.func_181662_b(x + 16.0, 256.0, z).func_181666_a(redColourR, redColourG, redColourB, redColourA).func_181675_d();
-                        worldrenderer.func_181662_b(x, 0.0, z + 16.0).func_181666_a(redColourR, redColourG, redColourB, redColourA).func_181675_d();
-                        worldrenderer.func_181662_b(x, 256.0, z + 16.0).func_181666_a(redColourR, redColourG, redColourB, redColourA).func_181675_d();
-                        worldrenderer.func_181662_b(x + 16.0, 0.0, z + 16.0).func_181666_a(redColourR, redColourG, redColourB, redColourA).func_181675_d();
-                        worldrenderer.func_181662_b(x + 16.0, 256.0, z + 16.0).func_181666_a(redColourR, redColourG, redColourB, redColourA).func_181675_d();
+                        worldrenderer.pos(x, 0.0, z).color(redColourR, redColourG, redColourB, redColourA).endVertex();
+                        worldrenderer.pos(x, 256.0, z).color(redColourR, redColourG, redColourB, redColourA).endVertex();
+                        worldrenderer.pos(x + 16.0, 0.0, z).color(redColourR, redColourG, redColourB, redColourA).endVertex();
+                        worldrenderer.pos(x + 16.0, 256.0, z).color(redColourR, redColourG, redColourB, redColourA).endVertex();
+                        worldrenderer.pos(x, 0.0, z + 16.0).color(redColourR, redColourG, redColourB, redColourA).endVertex();
+                        worldrenderer.pos(x, 256.0, z + 16.0).color(redColourR, redColourG, redColourB, redColourA).endVertex();
+                        worldrenderer.pos(x + 16.0, 0.0, z + 16.0).color(redColourR, redColourG, redColourB, redColourA).endVertex();
+                        worldrenderer.pos(x + 16.0, 256.0, z + 16.0).color(redColourR, redColourG, redColourB, redColourA).endVertex();
                     }
                 }
             }
             z = 0.0;
             x = 0.0;
             if (this.chunkEdgeState == 2) {
-                final float f2 = (float)(entity.func_70047_e() + entity.field_70163_u);
+                final float f2 = (float)(entity.getEyeHeight() + entity.posY);
                 final int eyeHeightBlock = (int)Math.floor(f2);
                 final int minY = Math.max(0, eyeHeightBlock - 16);
                 final int maxY = Math.min(256, eyeHeightBlock + 16);
@@ -104,29 +104,29 @@ public class ChunkEdgeRenderer
                     else {
                         if (y < 256) {
                             for (int n = 1; n < 16; ++n) {
-                                worldrenderer.func_181662_b((double)n, (double)y, z).func_181666_a(greenColourR, greenColourG, greenColourB, greenColourA).func_181675_d();
-                                worldrenderer.func_181662_b((double)n, (double)(y + 1), z).func_181666_a(greenColourR, greenColourG, greenColourB, greenColourA).func_181675_d();
-                                worldrenderer.func_181662_b(x, (double)y, (double)n).func_181666_a(greenColourR, greenColourG, greenColourB, greenColourA).func_181675_d();
-                                worldrenderer.func_181662_b(x, (double)(y + 1), (double)n).func_181666_a(greenColourR, greenColourG, greenColourB, greenColourA).func_181675_d();
-                                worldrenderer.func_181662_b((double)n, (double)y, z + 16.0).func_181666_a(greenColourR, greenColourG, greenColourB, greenColourA).func_181675_d();
-                                worldrenderer.func_181662_b((double)n, (double)(y + 1), z + 16.0).func_181666_a(greenColourR, greenColourG, greenColourB, greenColourA).func_181675_d();
-                                worldrenderer.func_181662_b(x + 16.0, (double)y, (double)n).func_181666_a(greenColourR, greenColourG, greenColourB, greenColourA).func_181675_d();
-                                worldrenderer.func_181662_b(x + 16.0, (double)(y + 1), (double)n).func_181666_a(greenColourR, greenColourG, greenColourB, greenColourA).func_181675_d();
+                                worldrenderer.pos((double)n, (double)y, z).color(greenColourR, greenColourG, greenColourB, greenColourA).endVertex();
+                                worldrenderer.pos((double)n, (double)(y + 1), z).color(greenColourR, greenColourG, greenColourB, greenColourA).endVertex();
+                                worldrenderer.pos(x, (double)y, (double)n).color(greenColourR, greenColourG, greenColourB, greenColourA).endVertex();
+                                worldrenderer.pos(x, (double)(y + 1), (double)n).color(greenColourR, greenColourG, greenColourB, greenColourA).endVertex();
+                                worldrenderer.pos((double)n, (double)y, z + 16.0).color(greenColourR, greenColourG, greenColourB, greenColourA).endVertex();
+                                worldrenderer.pos((double)n, (double)(y + 1), z + 16.0).color(greenColourR, greenColourG, greenColourB, greenColourA).endVertex();
+                                worldrenderer.pos(x + 16.0, (double)y, (double)n).color(greenColourR, greenColourG, greenColourB, greenColourA).endVertex();
+                                worldrenderer.pos(x + 16.0, (double)(y + 1), (double)n).color(greenColourR, greenColourG, greenColourB, greenColourA).endVertex();
                             }
                         }
-                        worldrenderer.func_181662_b(0.0, (double)y, 0.0).func_181666_a(greenColourR, greenColourG, greenColourB, greenColourA).func_181675_d();
-                        worldrenderer.func_181662_b(16.0, (double)y, 0.0).func_181666_a(greenColourR, greenColourG, greenColourB, greenColourA).func_181675_d();
-                        worldrenderer.func_181662_b(0.0, (double)y, 0.0).func_181666_a(greenColourR, greenColourG, greenColourB, greenColourA).func_181675_d();
-                        worldrenderer.func_181662_b(0.0, (double)y, 16.0).func_181666_a(greenColourR, greenColourG, greenColourB, greenColourA).func_181675_d();
-                        worldrenderer.func_181662_b(16.0, (double)y, 0.0).func_181666_a(greenColourR, greenColourG, greenColourB, greenColourA).func_181675_d();
-                        worldrenderer.func_181662_b(16.0, (double)y, 16.0).func_181666_a(greenColourR, greenColourG, greenColourB, greenColourA).func_181675_d();
-                        worldrenderer.func_181662_b(0.0, (double)y, 16.0).func_181666_a(greenColourR, greenColourG, greenColourB, greenColourA).func_181675_d();
-                        worldrenderer.func_181662_b(16.0, (double)y, 16.0).func_181666_a(greenColourR, greenColourG, greenColourB, greenColourA).func_181675_d();
+                        worldrenderer.pos(0.0, (double)y, 0.0).color(greenColourR, greenColourG, greenColourB, greenColourA).endVertex();
+                        worldrenderer.pos(16.0, (double)y, 0.0).color(greenColourR, greenColourG, greenColourB, greenColourA).endVertex();
+                        worldrenderer.pos(0.0, (double)y, 0.0).color(greenColourR, greenColourG, greenColourB, greenColourA).endVertex();
+                        worldrenderer.pos(0.0, (double)y, 16.0).color(greenColourR, greenColourG, greenColourB, greenColourA).endVertex();
+                        worldrenderer.pos(16.0, (double)y, 0.0).color(greenColourR, greenColourG, greenColourB, greenColourA).endVertex();
+                        worldrenderer.pos(16.0, (double)y, 16.0).color(greenColourR, greenColourG, greenColourB, greenColourA).endVertex();
+                        worldrenderer.pos(0.0, (double)y, 16.0).color(greenColourR, greenColourG, greenColourB, greenColourA).endVertex();
+                        worldrenderer.pos(16.0, (double)y, 16.0).color(greenColourR, greenColourG, greenColourB, greenColourA).endVertex();
                         renderedSome = true;
                     }
                 }
             }
-            tessellator.func_78381_a();
+            tessellator.draw();
             GL11.glPopMatrix();
             GL11.glEnable(3553);
             GL11.glDisable(3042);

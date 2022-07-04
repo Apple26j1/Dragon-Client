@@ -101,8 +101,8 @@ public class Module
     }
     
     static {
-        Module.mc = Minecraft.func_71410_x();
-        Module.fr = Minecraft.func_71410_x().field_71466_p;
+        Module.mc = Minecraft.getMinecraft();
+        Module.fr = Minecraft.getMinecraft().fontRendererObj;
         Module.sr = new ScaledResolution(Module.mc);
     }
 }

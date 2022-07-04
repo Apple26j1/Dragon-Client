@@ -17,10 +17,10 @@ public class ArmorStatusMod
             final boolean posX = false;
             final boolean posY = false;
             final int posXAdd = -16 * pos + 48;
-            GlStateManager.func_179094_E();
-            RenderHelper.func_74520_c();
-            Minecraft.func_71410_x().func_175599_af().func_180450_b(itemStack, sr.func_78326_a() / 2 + 20 + posXAdd, sr.func_78328_b() - 55);
-            GlStateManager.func_179121_F();
+            GlStateManager.pushMatrix();
+            RenderHelper.enableGUIStandardItemLighting();
+            Minecraft.getMinecraft().getRenderItem().renderItemAndEffectIntoGUI(itemStack, sr.getScaledWidth() / 2 + 20 + posXAdd, sr.getScaledHeight() - 55);
+            GlStateManager.popMatrix();
         }
     }
 }

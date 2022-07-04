@@ -20,8 +20,8 @@ public class ArmorStatus extends Module
     
     @SubscribeEvent
     public void onRender(final RenderGameOverlayEvent.Text event) {
-        for (int i21 = 0; i21 < Minecraft.func_71410_x().field_71439_g.field_71071_by.field_70460_b.length; ++i21) {
-            final ItemStack is = Minecraft.func_71410_x().field_71439_g.field_71071_by.field_70460_b[i21];
+        for (int i21 = 0; i21 < Minecraft.getMinecraft().thePlayer.inventory.armorInventory.length; ++i21) {
+            final ItemStack is = Minecraft.getMinecraft().thePlayer.inventory.armorInventory[i21];
             ArmorStatusMod.renderArmorStatus(ArmorStatus.sr, i21, is);
         }
     }

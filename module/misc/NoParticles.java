@@ -15,18 +15,18 @@ public class NoParticles extends Module
 {
     public NoParticles() {
         super("NoParticles", "Always holds down the sprint key", Category.FPSBOOST);
-        final FontRenderer fr = Minecraft.func_71410_x().field_71466_p;
+        final FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
         this.setToggled(false);
     }
     
     @SubscribeEvent
     public void removeParticle(final RenderGameOverlayEvent.Text text) {
-        MemoryFix.mc.field_71474_y.field_74362_aa = 10;
+        MemoryFix.mc.gameSettings.particleSetting = 10;
     }
     
     @Override
     public void onDisable() {
         super.onDisable();
-        MemoryFix.mc.field_71474_y.field_74362_aa = 100;
+        MemoryFix.mc.gameSettings.particleSetting = 100;
     }
 }

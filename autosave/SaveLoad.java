@@ -24,7 +24,7 @@ public class SaveLoad
     private File dataFile;
     
     public SaveLoad() {
-        this.dir = new File(Minecraft.func_71410_x().field_71412_D, "Client");
+        this.dir = new File(Minecraft.getMinecraft().mcDataDir, "Client");
         if (!this.dir.exists()) {
             this.dir.mkdir();
         }
